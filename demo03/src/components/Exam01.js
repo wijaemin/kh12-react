@@ -13,7 +13,12 @@ function Exam01(){
         setNumber(number+1);
     }
     function minus(){
-        setNumber(number-1);
+        if(number>0){
+            setNumber(number-1);
+        }
+        else{
+            alert("0미만의 숫자는 안돼용");
+        }
     }
     return(
         <>
