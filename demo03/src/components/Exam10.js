@@ -17,6 +17,19 @@ const [items,setItems] =useState([
 ]);
 const [backup, setBackup] = useState([]);
 
+const [data, setData] = useState({
+    itemName:"",
+    itemPrice:"",
+    itemType:"",
+});
+
+const changeData = e=>{
+    const newData = {
+        ...data, 
+        [e.target.name] : e.target.value
+    };
+    setData(newData);
+};
 //(중요) "시작하자마자" items의 내용을 backup으로 복제(1회)
 useEffect(()=>{
     setBackup(items.map(item=>{
@@ -130,6 +143,28 @@ const deleteItem = (target)=>{
     setBackup(newBackup);
 };
 
+//항목 추가
+//-data에 들어있는 객체를 복사해서 items에 추가
+//-data는 깨끗하게 정리
+// const addItem = ()=>{ //이렇게 써도 됨
+const addItem = e=>{
+    //const newItems = items.concat({...data});
+    const newItems =[...items, 
+        {
+            ...data, 
+            itemNo: items[items.length-1].itemNo+1
+        }
+    ];
+    setItems(newItems);
+
+    //입력창 초기화
+    setData({
+        itemName:"",
+        itemPrice:"",
+        itemType:"",
+    });
+
+};
 
 return(
 
@@ -145,7 +180,11 @@ return(
 
                     <div className="row mt-4">
                         <div className="col">
-                            <button type="button" className="btn btn-primary">추가</button>
+                            <input name="itemName" value={data.itemName} onChange={changeData}/>
+                            <input name="itemPrice" value={data.itemPrice} onChange={changeData}/>
+                            <input name="itemType" value={data.itemType} onChange={changeData}/>
+                            <button type="button" className="btn btn-primary" 
+                                    onClick={addItem}>추가</button>
                         </div>
                     </div>
 
