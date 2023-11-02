@@ -1,4 +1,5 @@
-import {useEffect, useState} from 'react';
+import {useEffect, useRef, useState} from "react";
+import {Modal} from "bootstrap";
 import Jumbotron from './Jumbotron';
 
 
@@ -12,6 +13,25 @@ const[todoList, setTodoList] = useState([
   {no:4, title:"친구만나기", type:"일상", edit:false},
 ]);
 const [backup, setBackup] = useState([]);
+
+const [data, setData] = useState({
+  title:"",
+  type:"",
+});
+
+const bsModal =useRef();
+
+const changeData = e=>{
+  const newData ={
+    ...data,
+    [e.target.name] : e.target.value
+  };
+  setData(newData);
+  
+}
+
+
+
 
 useEffect(()=>{
    setBackup(todoList.map(todo=>{
@@ -72,6 +92,15 @@ const cancelTodo = (target) => {
     setTodoList(newTodoList);
 };
 
+const deleteTodo =(target) =>{
+  //todo 삭제
+  const newTodoList = todoList.filter(todo=>todo.no !== target.no);
+  setTodoList(newTodoList);
+  //백업 삭제
+  const newBackup = todoList.filter(todo=>todo.no !== target.no);
+  setBackup(newBackup);
+};
+
 const saveTodo = (target) => {
   
   const newBackup = backup.map(todo =>{
@@ -103,9 +132,73 @@ const saveTodo = (target) => {
 
 };
 
+const addTodo = e=>{
+  const last = todoList.length-1
+  const no = todoList.length == 0 ? 1 : todoList[last].no+1
+
+  const newTodoList =[
+    ...todoList,
+    {
+      ...data,
+      edit:false,
+      no:no
+    } 
+  ];
+  setTodoList(newTodoList);
+
+  const newBackup =[
+    ...backup, 
+    {
+        ...data,
+        edit:false, 
+        no: no
+    }
+
+  ];
+  setBackup(newBackup);
+
+  //입력창 초기화
+  setData({
+    title:"",
+    type:""
+  });
+  //모달 닫기
+  closeModal();
+};
+const cancelAddTodo =()=>{
+  //입력창 초기화
+  setData({
+    title:"",
+    type:""
+
+  });
+  //닫아
+  closeModal();
+}
+    //모달 여는 함수
+    const openModal = ()=>{
+      // var modal = new Modal(document.querySelector("#exampleModal"));//VanullaJS style
+      var modal = new Modal(bsModal.current);//React style
+      modal.show();
+  };
+
+  const closeModal = ()=>{
+    // var modal = Modal.getInstance(document.querySelector("#exampleModal"));//VanullaJS style
+    var modal = Modal.getInstance(bsModal.current);//React style
+    modal.hide();
+}
+
 
     return(
         <>
+              <div className="row mt-4">
+                <div className="col">
+                  <button type="button" className="btn btn-primary" 
+                          onClick={openModal}>
+                  신규등록           
+                  </button>
+                </div>
+              </div>
               <div className="row mt-4">
                 <div className="col">
                   
@@ -147,7 +240,8 @@ const saveTodo = (target) => {
                           <td>
                             <button className="btn btn-sm btn-warning" 
                               onClick={e=>changeToEdit(todo)}>수정</button>
-                            <button className="btn btn-sm btn-danger ms-1" >삭제</button>
+                            <button className="btn btn-sm btn-danger ms-1" 
+                              onClick={e=>deleteTodo(todo)}>삭제</button>
 
                           </td>
                         </tr>
@@ -162,6 +256,45 @@ const saveTodo = (target) => {
                   </table>
                 </div>
               </div>
+
+            {/* Modal */}
+            <div className="modal fade" ref={bsModal} id="exampleModal" 
+                    data-bs-backdrop="static" tabIndex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div className="modal-dialog">
+                <div className="modal-content">
+                <div className="modal-header">
+                    <h5 className="modal-title fs-5" id="exampleModalLabel">신규 일정 등록</h5>
+                    <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div className="modal-body">
+                    
+                    <div className="row">
+                        <div className="col">
+                            <label className="form-label">제목</label>
+                            <input name="title" value={data.title} onChange={changeData}
+                                    className="form-control"/>
+                        </div>
+                    </div>
+                    <div className="row mt-4">
+                        <div className="col">
+                            <label className="form-label">종류</label>
+                            <input name="type" value={data.type} onChange={changeData}
+                                    className="form-control"/>
+                        </div>
+                    </div>                      
+                  
+                </div>
+                <div className="modal-footer">
+                    {/* 자동으로 닫히게 하는 버튼 */}
+                    {/* <button type="button" className="btn btn-secondary" data-bs-dismiss="modal">닫기</button> */}
+                    <button type ="button" className="btn btn-secondary" 
+                            onClick={cancelAddTodo}>취소</button>
+                    <button type="button" className="btn btn-primary" 
+                            onClick={addTodo}>추가</button>
+                </div>
+                </div>
+            </div>
+            </div>
 
 
         </>

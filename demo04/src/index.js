@@ -6,7 +6,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 //이곳에 bootswatch css 파일을 불러오는 구문을 작성
 import 'bootswatch/dist/flatly/bootstrap.min.css';
 import './index.css';
-import App from './App';
+import App from './App1';
 import reportWebVitals from './reportWebVitals';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
