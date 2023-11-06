@@ -46,7 +46,7 @@ const Book = (props)=>{
                                 <th>저자</th>
                                 <th className="pc-only">출간일</th>
                                 <th>가격</th>
-                                <th>출판사</th>
+                                <th className="pc-only">출판사</th>
                                 <th className="pc-only">페이지 수</th>
                                 <th className="pc-only">장르</th>
                                 <th>상태</th>
@@ -60,7 +60,7 @@ const Book = (props)=>{
                                     <td>{book.bookAuthor}</td>
                                     <td className="pc-only">{book.bookPublicationDate}</td>
                                     <td>{book.bookPrice}</td>
-                                    <td>{book.bookPublisher}</td>
+                                    <td className="pc-only">{book.bookPublisher}</td>
                                     <td className="pc-only">{book.bookPageCount}</td>
                                     <td className="pc-only">{book.bookGenre}</td>
                                     <td>
