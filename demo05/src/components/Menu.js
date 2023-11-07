@@ -14,6 +14,7 @@ const Menu =props=>{
             </button>
             <div className="collapse navbar-collapse" id="navbarColor01">
             <ul className="navbar-nav me-auto">
+          
                 <li className="nav-item">
                 <NavLink className={`nav-link ${location.pathname ==='/pocketmon' ? 'active' : ''}`} to="/pocketmon">포켓몬</NavLink>
 

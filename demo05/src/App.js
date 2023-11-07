@@ -1,5 +1,4 @@
 import { Route, Routes } from "react-router";
-import { NavLink } from "react-router-dom";
 import Pocketmon from "./components/Pocketmon";
 import Book from "./components/Book";
 import Home from "./components/Home";
@@ -14,6 +13,7 @@ function App() {
       {/* 본문 영역 */}
       <div className="row">
         <div className="col-sm-10 offset-sm-1">
+
         <Routes>
           <Route exact path="/" element={<Home/>}></Route>
           <Route path="/pocketmon" element={<Pocketmon/>}></Route>

@@ -228,6 +228,7 @@ const Book = (props)=>{
                             {book.bookId === undefined ? 
                             '신규 도서 등록' : `${book.bookId}번 도서 수정`}
                         </h5>
+                        
                         <button type="button" className="btn-close" data-bs-dismiss="modal" aria-label="Close" onClick={closeModal}></button>
 
                     </div>
