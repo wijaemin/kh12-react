@@ -3,29 +3,46 @@ import axios from "axios";
 import { FaXmark } from "react-icons/fa6";
 import { FaRegEdit } from "react-icons/fa";
 
+
 import "./Book.css";
 
 const Book = (props)=>{
     const [bookList,setBookList] =useState([]);
 
-    useEffect(()=>{
-        //서버에서 book list를 불러와서 state에 저장하는 코드
-
+    const loadBook= ()=>{
         axios({
             url:"http://localhost:8080/book/",
             method:"get"
 
         })
         .then(response=>{
-            console.log(response);
+            // console.log(response);
             setBookList(response.data);
         })
         .catch(error=>{
             window.alert("통신 오류 발생");
         });
-
-
+    };
+    useEffect(()=>{
+       loadBook();
     },[]);
+    
+    //도서 삭제
+    const deleteBook =(book) =>{
+        const choice = window.confirm("정말 삭제?");
+        if(choice === false) return;
+
+
+        axios({
+            // url:"http://localhost:8080/book/"+book.bookId,
+            url:`http://localhost:8080/book/${book.bookId}`,
+            method:"delete"
+        })
+        .then(response=>{
+            loadBook();
+        })
+        .catch(err=>{});
+    };
 
     return(
         <>
@@ -64,8 +81,8 @@ const Book = (props)=>{
                                     <td className="pc-only">{book.bookPageCount}</td>
                                     <td className="pc-only">{book.bookGenre}</td>
                                     <td>
-                                        <FaRegEdit className ="text-warning ms-1"/>
-                                        <FaXmark className="text-danger ms-1"/>
+                                        <FaRegEdit className ="text-warning"/>
+                                        <FaXmark className="text-danger" onClick={e=>deleteBook(book)}/>
                                     </td>
                                 </tr>
                             ))}
