@@ -20,7 +20,18 @@ const BookInfinite = (props)=>{
     useEffect(()=>{
         loadBook();
 
-    },[]);
+    },[page]);
+
+    //다음 페이지
+    const nextPage = ()=>{
+        setPage(page+1);//페이지 1 증가
+    };
+
+    //개수가 변하면 페이지를 1로, 목록을 모두 지우고 다시 불러와야 한다
+    useEffect(()=>{
+        setPage(1);
+        setBookList([]);
+    },[size]);
     return(
         <>
             <div className="row">
@@ -30,18 +41,31 @@ const BookInfinite = (props)=>{
             </div>
 
             <div className="row mt-4">
+                <div className="col-2 offset-10">
+                    <select value={size} onChange={e=>setSize(e.target.value)}>
+                        <option value="20">20개씩 보기</option>
+                        <option value="30">30개씩 보기</option>
+                        <option value="40">40개씩 보기</option>
+                        <option value="50">50개씩 보기</option>
+                    </select>
+                </div>
+            </div>
+
+            <div className="row mt-4">
                 <div className="col">
                     <table className="table">
                         <thead>
                             <tr>
+                                <th>번호</th>
                                 <th>제목</th>
                                 <th>저자</th>
                                 <th>출판사</th>
                             </tr>
                         </thead>
                         <tbody>
-                            {bookList.map(book=>(
+                            {bookList.map((book,index)=>(
                                 <tr key={book.bookId}>
+                                    <td>{index+1}</td>
                                     <td>{book.bookTitle}</td>
                                     <td>{book.bookAuthor}</td>
                                     <td>{book.bookPublisher}</td>
@@ -51,6 +75,16 @@ const BookInfinite = (props)=>{
                         </tbody>
                     </table>
                 </div>
+
+                {/* 더보기 버튼 */}
+                <div className="row mt-2">
+                    <div className="col">
+                        <button className="btn btn-primary w-100" onClick={nextPage}>
+                            {size}개 더보기
+                        </button>
+                    </div>
+                </div>
+
             </div>
         </>
     );
