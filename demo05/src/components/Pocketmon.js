@@ -10,7 +10,7 @@ const Pocketmon =(props)=>{
 
     const loadPocketmon =()=>{
         axios({
-            url:"http://localhost:8080/pocketmon/",
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/`,
             method:"get"
 
         })
@@ -31,7 +31,7 @@ const Pocketmon =(props)=>{
         if(choice === false) return;
         //axios({옵션}).then(성공시 실행할 할수).catch(실패시 실행할 함수);
         axios({
-            url:`http://localhost:8080/pocketmon/${pocketmon.no}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/${pocketmon.no}`,
             method:"delete"
         })
         .then(response=>{
@@ -69,7 +69,7 @@ const Pocketmon =(props)=>{
     const savePocketmon = () =>{
         //axios로 서버에 등록 요청을 보낸 뒤 등록이 성공하면 목록을 갱신하도록 처리
         axios({
-            url:"http://localhost:8080/pocketmon/",
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/`,
             method:"post",
             data:pocketmon
         })
@@ -95,7 +95,7 @@ const Pocketmon =(props)=>{
         const{no, name, type} =pocketmon;
 
         axios({
-            url:`http://localhost:8080/pocketmon/${no}`,
+            url:`${process.env.REACT_APP_REST_API_URL}/pocketmon/${no}`,
             method:"put",
             data:{
                 name:name,
